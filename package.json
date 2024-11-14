@@ -9,6 +9,7 @@
     "@fastify/session": "^10.7.2",
     "@fastify/static": "^7.0.3",
     "@fastify/view": "^9.0.0",
+    "cross-env": "^7.0.3",
     "ejs": "^3.1.10",
     "fastify": "^4.26.2",
     "http-server": "^14.1.1"
