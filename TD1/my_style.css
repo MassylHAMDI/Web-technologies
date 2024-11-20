@@ -1,0 +1,27 @@
+.container {
+    width: 800px;
+    margin: auto;
+}
+
+.table {
+    border: darkblue dotted 3px;
+    border-collapse: collapse;
+}
+
+.table th {
+    background-color: yellow;
+    color: darkred;
+    font-size: large;
+}
+
+.table th, td {
+    border: 1px solid;
+}
+
+.table-striped tr:nth-child(even) {
+    background-color: lightgray;
+}
+
+.table-hover tr:hover {
+    background-color: gray;
+}
