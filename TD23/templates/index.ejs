@@ -28,7 +28,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- TODO : générer la liste des niveaux -->
+                    <% levels.forEach(level => { %>
+                        <tr>
+                            <td><%= level.length %> lettres</td>
+                            <td><%= level.theme %></td>
+                            <td>
+                                <% for(let i = 0; i < level.difficulty; i++) { %>
+                                    &#9733;
+                                <% } %>
+                            </td>
+                            <td><a href="level/<%= level.id %>">Démarrer</a></td>
+                        </tr>
+                    <% }); %>
+
                 </tbody>
             </table>
         </div>

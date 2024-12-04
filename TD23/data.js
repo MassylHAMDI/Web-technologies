@@ -20,3 +20,11 @@ export const data = {
         "8": "MONTAGNE"
     }
 };
+
+// data.levels[0].id = 1
+// data.levels[1].length = 6
+// data.levels[0].theme = "Littérature"
+// data.levels[0].difficulty = 3
+
+// data.words[5] = "CROISSANT"
+// data.words[data.levels[2].id] = "afflux"

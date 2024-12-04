@@ -14,7 +14,7 @@
                     <img src="/favicon.svg" alt="favicon">
                     <strong>La revanche des lettres</strong>
                 </a>
-                <span class="navbar-text"><!-- TODO 2 --> (<!-- TODO 3--> lettres)</span>
+                <span class="navbar-text"><%= level.theme %> (<%= level.length %> lettres)</span>
             </div>
         </div>
         <div class="container">
@@ -22,11 +22,20 @@
             <div class="col-4 offset-4">
                 <table class="table table-bordered text-center">
                     <tbody>
-                        <!-- TODO 1 -->
+                        <tr>
+                            <% for (const letter of letters) { %>
+                                <td class="text-bg-primary"><%= letter %></td>
+                            <% } %>
+                        </tr>
                         <!-- TODO 5 -->
                     </tbody>
                 </table>
-                <!-- TODO 4 -->
+                <form action="/level/<%= level.id %>" method="POST">
+                    <div class="input-group mb-3">
+                        <input type="text" name="word" class="form-control">
+                        <button type="submit ">Proposer</button>
+                    </div>
+                </form>
             </div>
         </div>
     </body>
