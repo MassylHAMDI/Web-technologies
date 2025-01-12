@@ -18,6 +18,10 @@ export class ServerApp {
         fastify.setErrorHandler((error, request, reply) => {return this.handleError(error, reply);});
         fastify.setNotFoundHandler((request, reply) => {return this.handleNotFound(reply);});
         fastify.register(fastifyView, {engine: {ejs: ejs}});
+        fastify.register(fastifyFormbody);
+        fastify.post("/level/:id(^\\d+$)", (request, reply) => this.postWord(request, reply));
+        fastify.register(fastifyCookie);
+        fastify.register(fastifySession, {secret: '01234567890123456789012345678901', cookie: {secure: 'auto'}});
         return fastify.register(fastifyStatic, { root: new URL('static', import.meta.url) });
       }
 
@@ -47,18 +51,20 @@ export class ServerApp {
         }
     }
     getLevel(request, reply) {
+        // Reset session data if needed 
+        this.resetSessionIfNeeded(request);
+        
         const id = parseInt(request.params.id);
         const level = this.game.level(id);
         const letters = this.game.letters(id);
-        // reply.type('application/json').send({
-        //     level: level,
-        //     letters: letters  
-        // });
+        
+        // Use session lines instead of empty array
         reply.view('templates/level.ejs', {
             level: level,
-            letters: letters
+            letters: letters,
+            lines: request.session.lines // Use session lines
         });
-      }
+    }
     handleError(error, reply) {
         return reply
             .status(500)
@@ -75,5 +81,29 @@ export class ServerApp {
                 code: 404, 
                 error: 'Impossible de trouver cette page' 
             });
+    }postWord(request, reply) {
+        try {
+            this.resetSessionIfNeeded(request);
+            
+            const id = parseInt(request.params.id);
+            const playedWord = request.body.word;
+            const line = this.game.computeLine(id, playedWord);
+            
+            // Add new line to session lines
+            request.session.lines.push(line);
+    
+            // Redirect to level page instead of rendering view
+            return reply.redirect(`/level/${id}`);  
+        } catch (error) {
+            return this.handleError(error, reply);
+        }
     }
+    resetSessionIfNeeded(request) {
+        if (!request.session.levelId || request.params.id !== request.session.levelId) {
+            request.session.levelId = request.params.id;
+            request.session.lines = [];
+        }
+    }
+
+    
 }
