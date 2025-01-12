@@ -51,14 +51,12 @@ export class ServerApp {
         }
     }
     getLevel(request, reply) {
-        // Reset session data if needed 
         this.resetSessionIfNeeded(request);
         
         const id = parseInt(request.params.id);
         const level = this.game.level(id);
         const letters = this.game.letters(id);
         
-        // Use session lines instead of empty array
         reply.view('templates/level.ejs', {
             level: level,
             letters: letters,
@@ -89,10 +87,7 @@ export class ServerApp {
             const playedWord = request.body.word;
             const line = this.game.computeLine(id, playedWord);
             
-            // Add new line to session lines
             request.session.lines.push(line);
-    
-            // Redirect to level page instead of rendering view
             return reply.redirect(`/level/${id}`);  
         } catch (error) {
             return this.handleError(error, reply);
